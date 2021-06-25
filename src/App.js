@@ -7,7 +7,7 @@ import FlowerList from './FlowerList';
 import FlowerEdit from './FlowerEdit';
 
 
-//it calls our API to show the list of plants in flowergarden with properties:
+//it calls our API to show the list of plants in flowergarden with their properties:
 class App extends Component {
   
 
@@ -22,9 +22,9 @@ class App extends Component {
               <h2>Welcome To My Garden</h2>
               <Router>
                 <Switch>
-                  <Route path='/' exact={true} component={Garden}/>
-                  <Route path='/flowerslist' exact={true} component={FlowerList}/>
-                  <Route path='/flowerslist/:plant_id' component={FlowerEdit}/>
+                  <Route path='/' exact={true} component={Garden}/> {/* Calls Home (Garden page) */}
+                  <Route path='/flowerslist' exact={true} component={FlowerList}/> {/* Calls main page (Flowers list) */}
+                  <Route path='/flowerslist/:plant_id' component={FlowerEdit}/> {/* Calls the page Add or Edit form data */}
                 </Switch>
               </Router>
             </div>

@@ -8,7 +8,7 @@ import { Link } from 'react-router-dom';
 
 
 //Main page for flower garden
-//Asynchronous connection with Java page to get/post/update/delete data from the postgres database.
+//Ajax connection with Java page to delete data from the postgres database.
 //Bootstrap for styling the HTML components
 
 class FlowerList extends Component {
@@ -18,16 +18,20 @@ class FlowerList extends Component {
         super(props); //Pass state
         this.state = {flowergarden: []}; //Initiate array to hold state
         this.remove = this.remove.bind(this); 
+        
     }
 //the componentDidMount function is calling our API to load our flowers list.
    componentDidMount() {
-        fetch('http://localhost:8080/FlowerGarden/')
+       //FlowerGarden is Spring-boot API rest controller 
+        fetch('https://mygarden-assistant.herokuapp.com/FlowerGarden/')
             .then(response => response.json())
             .then(data => this.setState({flowergarden: data})); //set state with data from the Postgres DB
+
+            
     }
 //API call to delete selected flower from the postgres DB.
-    async remove(Plant_id) {
-        await fetch(`http://localhost:8080/FlowerGarden/${Plant_id}`, {
+    async remove(plant_id) {
+        await fetch(`https://mygarden-assistant.herokuapp.com/FlowerGarden/${plant_id}`, {
             method: 'DELETE',
             headers: {
                 'Accept': 'application/json',
@@ -37,14 +41,17 @@ class FlowerList extends Component {
                 'mode': 'no-cors'
             }
         }).then(() => {
-            let updatedFlowers = [...this.state.flowergarden].filter(i => i.Plant_id !== Plant_id); //new array minus the flower deleted.
+            let updatedFlowers = [...this.state.flowergarden].filter(i => i.plant_id !== plant_id); //new array minus the flower deleted.
             this.setState({flowergarden: updatedFlowers}); //setstate with updated flowers list.
         });
+
+    
     }
     render() {
         const {flowergarden} = this.state; //array set with flowers data.
-
-        console.log(flowergarden)
+      
+        /*console.log(flowergarden)*/
+        
     
         // map each flower data from Postgres table to HTML element.
          const flowerList = flowergarden.map (flowergarden => {
@@ -73,7 +80,7 @@ class FlowerList extends Component {
         return (
             <div>
                 <AppNavbar/> 
-                <Container fluid>
+                <Container>
                     <div className="float-right">
                         <Button color="success" tag={Link} to="/flowerslist/new">Add Flowers</Button>  {/* Link to add a new flower to the Postgres DB */}
                     </div>
@@ -82,17 +89,17 @@ class FlowerList extends Component {
             {/* Header for the flowers list */}
                         <thead>
                         <tr>
-                            <th width="30%">Name</th>
-                            <th width="30%">Plant Type</th>
-                            <th width="40%">Seasonality</th>
-                            <th width="40%">Watering Duration</th>
-                            <th width="40%">Planting Date</th>
-                            <th width="40%">End Date</th>
-                            <th width="40%">Fertilization Need 1</th>
-                            <th width="40%">Fertilization Duration 1</th>
-                            <th width="40%">Fertilization Need 2</th>
+                            <th width="5%">Name</th>
+                            <th width="5%">Plant Type</th>
+                            <th width="5%">Seasonality</th>
+                            <th width="5%">Watering Duration</th>
+                            <th width="5%">Planting Date</th>
+                            <th width="5%">End Date</th>
+                            <th width="5%">Fertilization Need 1</th>
+                            <th width="5%">Fertilization Duration 1</th>
+                            <th width="5%">Fertilization Need 2</th>
 
-                            <th width="40%">Fertilization Duration2</th>
+                            <th width="5%">Fertilization Duration2</th>
                             </tr>
                         </thead>
                         <tbody>
